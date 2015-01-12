@@ -30,22 +30,28 @@ names(City_newCRS)
 plot(allNDVI)
 
 source('R/GreenPerCity.R')
-Greeny <- GreenPerCity(allNDVI[[1:2]], City_newCRS)
-class(Greeny)
-names(Greeny)
-spplot(Greeny[19])
 
-City_newCRS@data <- data.frame(City_newCRS@data, Greeny)
+# Extracting mean NDVI/month/City
+GreenCity <- GreenPerCity(allNDVI, City_newCRS)
 
-CityGreen <- merge(Greeny[[1:2]], City_newCRS)
-class(City_newCRS)
-head(City_newCRS)
+# Creating Dataframe (not spatial) for subsetting
+GreenDF <- GreenCity@data
 
-#GreenCities <- City_newCRS[,8]
-# City_newCRS[[15]] <- Greeny
-# City_newCRS
-# names(City_newCRS)[8] <- paste('City')
-# names(City_newCRS)[15] <- paste('meanNDVI')
-# head(City_newCRS)
+### Examples of determining the greenest city of the Netherlands for a month or averaged over the year
+Greenest_Jan <- GreenestCity('January')
+Greenest_Jun <- GreenestCity('June')
+Greenest_Nov <- GreenestCity('November')
+Greenest_ALL <- GreenestCity('Mean_NDVI')   # <- MEAN OVER THE YEAR!
 
-spplot(City_newCRS[15])
+    # # # Greenest City EVER # # #
+         print(Greenest_ALL)
+
+### Please try it yourself!!! (first uncomment next line and fill in month of your choice)
+# GreenestMonthCity <- GreenestCity('ENTER__MONTH')
+
+# Plot March NDVI average per municipality
+spplot(GreenCity['March'], main=list(label="March",cex=3))
+spplot(GreenCity['November'], main=list(label="November",cex=3))
+spplot(GreenCity['Mean_NDVI'], main=list(label="YEAR_AVG",cex=3))
+
+
